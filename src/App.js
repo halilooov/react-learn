@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import './App.css'
+import classes from './App.module.scss'
 import Car from './Car/Car'
 
 class App extends Component {
@@ -20,18 +20,8 @@ class App extends Component {
         })
     }
 
-    handleInput = (event) => {
-        this.setState({
-            pageTitle: event.target.value
-        })
-    }
-
-    changeTitleHandler = pageTitle => {
-        this.setState({pageTitle})
-    }
-
     onChangeName(name, index) {
-        const car = this.state.cars
+        const car = this.state.cars[index]
         car.name = name
         const cars = [...this.state.cars]
         cars[index] = car
@@ -61,14 +51,20 @@ class App extends Component {
         }
 
         return (
-            <div>
+            <div className={classes.App}>
                 <h1>{this.state.pageTitle}</h1>
 
                 <button
                     onClick={this.toggleCarsHandler}
                 >Toggle cars</button>
 
-                { cars }
+                <div style={{
+                    width: 400,
+                    margin: 'auto',
+                    paddingTop: 20
+                }}>
+                    { cars }
+                </div>
             </div>
         )
     }
