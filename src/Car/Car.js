@@ -1,16 +1,57 @@
 import React from 'react'
+import classes from './Car.module.scss'
+import PropTypes from 'prop-types'
+import withClass from '../hoc/withClass'
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (props) => (
-    <div style={{
-        border: '1px solid #ccc',
-        marginBottom: '10px',
-        display: 'block',
-        padding: '10px'
-    }}>
-        <h3>Car name: {props.name}</h3>
-        <p>Year: <b>{props.year}</b></p>
-        <input type="text" onChange={props.onChangeName} value={props.name} />
-        <button onClick={props.onDelete}>Delete</button>
-    </div>
-)
+class Car extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.inputRef = React.createRef()
+    }
+
+    componentDidMount() {
+        if (this.props.index === 1) {
+            this.inputRef.current.focus()
+        }
+    }
+
+    render() {
+        const inputClasses = [classes.input]
+
+        if (this.props.name !== '') {
+            inputClasses.push(classes.green)
+        } else {
+            inputClasses.push(classes.red)
+        }
+
+        if (this.props.name.length > 4) {
+            inputClasses.push(classes.bold)
+        }
+        return (
+            <React.Fragment>
+                <h3>Сar name: {this.props.name}</h3>
+                <p>Year: <strong>{this.props.year}</strong></p>
+                <input
+                    ref={this.inputRef}
+                    type="text"
+                    onChange={this.props.onChangeName}
+                    value={this.props.name}
+                    className={inputClasses.join(' ')}
+                />
+                <button onClick={this.props.onDelete}>Delete</button>
+            </React.Fragment>
+        )
+    }
+}
+
+Car.propTypes = {
+    name: PropTypes.string.isRequired,
+    year: PropTypes.number,
+    index: PropTypes.number,
+    onChangeName: PropTypes.func,
+    onDelete: PropTypes.func
+}
+
+export default withClass(Car, classes.Car)
